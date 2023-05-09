@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Core.Entities
 {
-    public class Projects : BaseEntity
+    public class Project : BaseEntity
     {
-        public Projects(string title, string description, int idClient, int idFreenlancer, decimal totalCost)
+        public Project(string title, string description, int idClient, int idFreenlancer, decimal totalCost)
         {
             Title = title;
             Description = description;
@@ -32,5 +32,13 @@ namespace DevFreela.Core.Entities
         public DateTime? FinishedAt { get; private set; }
         public ProjectStatusEnum Status { get; private set; }
         public  List<ProjectsComments> Comments { get; private set; }
+
+        public void Cancel()
+        {
+            if (Status == ProjectStatusEnum.InProgress)
+            {
+                Status = ProjectStatusEnum.Cancelled;
+            }
+        }
     }
 }

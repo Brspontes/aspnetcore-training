@@ -1,4 +1,6 @@
 using DevFreela.API.Models;
+using DevFreela.Application.Services.Interfaces;
+using DevFreela.Infra.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,8 @@ namespace DevFreela.API
         {
             services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
             services.AddControllers();
+            services.AddSingleton<DevFreelaDbContext>();
+            services.AddScoped<IProjectService, IProjectService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevFreela.API", Version = "v1" });

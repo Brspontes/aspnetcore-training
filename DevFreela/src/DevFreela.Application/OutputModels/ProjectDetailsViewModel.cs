@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.OutputModels
 {
-    internal class ProjectDetailsViewModel
+    public class ProjectDetailsViewModel
     {
         public ProjectDetailsViewModel(string title, DateTime createdAt)
         {

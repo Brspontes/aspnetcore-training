@@ -1,7 +1,7 @@
 ﻿using DevFreela.API.Models;
-using Microsoft.AspNetCore.Http;
+using DevFreela.Application.InputModels;
+using DevFreela.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace DevFreela.API.Controllers
 {
@@ -9,33 +9,35 @@ namespace DevFreela.API.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        private readonly OpeningTimeOption options;
-        public ProjectsController(IOptions<OpeningTimeOption> options)
+        private readonly IProjectService projectService;
+
+        public ProjectsController(IProjectService projectService)
         {
-            this.options = options.Value;
+            this.projectService = projectService;
         }
+
         [HttpGet]
         public IActionResult Get(string query)
         {
-            return Ok();
+            return Ok(projectService.GetAll(query));
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok();
+            return Ok(projectService.GetById(id));
         }
 
         [HttpPost()]
-        public IActionResult Post([FromBody] CreateProjectModel createProjectModel)
+        public IActionResult Post([FromBody] NewProjectInputModel createProjectModel)
         {
-            if (createProjectModel.title.Length > 50)
+            if (createProjectModel.Title.Length > 50)
                 return BadRequest();
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateProjectModel createProjectModel)
+        public IActionResult Put(int id, [FromBody] UpdateProjectInputModel createProjectModel)
         {
             if (createProjectModel.Description.Length > 200)
                 return BadRequest();

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Services.Implementations
 {
-    internal class ProjectService : IProjectService
+    public class ProjectService : IProjectService
     {
         private readonly DevFreelaDbContext dbContext;
 
@@ -44,13 +44,14 @@ namespace DevFreela.Application.Services.Implementations
 
         public void Finish(int id)
         {
-            throw new NotImplementedException();
+            var project = dbContext.Projects.SingleOrDefault(p => p.Id == id);
+            project.Finish();
         }
 
         public List<ProjectViewModel> GetAll(string query)
         {
             var projects = dbContext.Projects;
-            return projects.Select(p => new ProjectViewModel(p.Title, p.CreatedAt))
+            return projects.Select(p => new ProjectViewModel(p.Id, p.Title, p.CreatedAt))
                            .ToList();
         }
 
@@ -62,12 +63,14 @@ namespace DevFreela.Application.Services.Implementations
 
         public void Start(int id)
         {
-            throw new NotImplementedException();
+            var project = dbContext.Projects.SingleOrDefault(p => p.Id == id);
+            project.Start();
         }
 
         public void Update(UpdateProjectInputModel inputModel)
         {
-            throw new NotImplementedException();
+            var project = dbContext.Projects.SingleOrDefault(p => p.Id == inputModel.Id);
+            project.Update(inputModel.Title, inputModel.Description, inputModel.TotalCost);
         }
     }
 }

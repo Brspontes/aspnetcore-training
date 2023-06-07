@@ -1,10 +1,12 @@
 using DevFreela.API.Models;
+using DevFreela.Application.Services.Implementations;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Infra.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,9 +32,12 @@ namespace DevFreela.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddControllers();
-            services.AddSingleton<DevFreelaDbContext>();
-            services.AddScoped<IProjectService, IProjectService>();
+
+            services.AddDbContext<DevFreelaDbContext>(opt => opt.UseSqlServer(connectionString));
+
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevFreela.API", Version = "v1" });

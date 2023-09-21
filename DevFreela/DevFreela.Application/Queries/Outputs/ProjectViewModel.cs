@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevFreela.Application.ViewModels
+namespace DevFreela.Application.Queries.Outputs
 {
     public class ProjectViewModel
     {

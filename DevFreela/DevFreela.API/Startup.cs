@@ -39,11 +39,7 @@ namespace DevFreela.API
             services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
             //services.AddDbContext<DevFreelaDbContext>(options => options.UseInMemoryDatabase("Devfreela"));
 
-            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISkillService, SkillService>();
-
-            
 
             services.AddControllers();
 

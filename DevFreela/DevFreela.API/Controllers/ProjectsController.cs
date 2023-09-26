@@ -2,10 +2,10 @@
 using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Commands.DeleteProject;
 using DevFreela.Application.Commands.FinishProject;
+using DevFreela.Application.Commands.StartProject;
 using DevFreela.Application.Commands.UpdateProject;
 using DevFreela.Application.Queries.GetAllProjects;
-using DevFreela.Application.Queries.GetProjectsById;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Application.Queries.GetProjectById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -15,17 +15,19 @@ namespace DevFreela.API.Controllers
     [Route("api/projects")]
     public class ProjectsController : ControllerBase
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
         public ProjectsController(IMediator mediator)
         {
-            this.mediator = mediator;
+            _mediator = mediator;
         }
 
         // api/projects?query=net core
         [HttpGet]
         public async Task<IActionResult> Get(string query)
         {
-            var projects = await mediator.Send(new GetAllProjectsQuery());
+            var getAllProjectsQuery = new GetAllProjectsQuery(query);
+
+            var projects = await _mediator.Send(getAllProjectsQuery); 
 
             return Ok(projects);
         }
@@ -34,7 +36,9 @@ namespace DevFreela.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var project = await mediator.Send(new GetProjectByIdQuery(id));
+            var query = new GetProjectByIdQuery(id);
+
+            var project = await _mediator.Send(query);
 
             if (project == null)
             {
@@ -52,8 +56,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest();
             }
 
-            // var id = _projectService.Create(inputModel);
-            var id = await mediator.Send(command);
+            var id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
@@ -67,7 +70,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest();
             }
 
-            await mediator.Send(command);
+            await _mediator.Send(command);
 
             return NoContent();
         }
@@ -76,7 +79,9 @@ namespace DevFreela.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-           await mediator.Send(new DeleteProjectCommand(id));
+            var command = new DeleteProjectCommand(id);
+
+            await _mediator.Send(command);
 
             return NoContent();
         }
@@ -85,7 +90,7 @@ namespace DevFreela.API.Controllers
         [HttpPost("{id}/comments")]
         public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
         {
-            await mediator.Send(command);
+            await _mediator.Send(command);
 
             return NoContent();
         }
@@ -94,7 +99,9 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}/start")]
         public async Task<IActionResult> Start(int id)
         {
-            await mediator.Send(new StartProjectCommand(id));
+            var command = new StartProjectCommand(id);
+
+            await _mediator.Send(command);
 
             return NoContent();
         }
@@ -103,7 +110,9 @@ namespace DevFreela.API.Controllers
         [HttpPut("{id}/finish")]
         public async Task<IActionResult> Finish(int id)
         {
-            await mediator.Send(new FinishProjectCommand(id));
+            var command = new FinishProjectCommand(id);
+
+            await _mediator.Send(command);
 
             return NoContent();
         }

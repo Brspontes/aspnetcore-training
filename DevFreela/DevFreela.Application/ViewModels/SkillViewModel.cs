@@ -1,4 +1,4 @@
-﻿namespace DevFreela.Application.Queries.Outputs
+﻿namespace DevFreela.Application.ViewModels
 {
     public class SkillViewModel
     {

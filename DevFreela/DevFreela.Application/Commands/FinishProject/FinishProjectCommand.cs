@@ -1,7 +1,4 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DevFreela.Application.Commands.FinishProject
 {
@@ -9,9 +6,9 @@ namespace DevFreela.Application.Commands.FinishProject
     {
         public FinishProjectCommand(int id)
         {
-            this.id = id;
+            Id = id;
         }
 
-        public int id { get; set; }
+        public int Id { get; private set; }
     }
 }

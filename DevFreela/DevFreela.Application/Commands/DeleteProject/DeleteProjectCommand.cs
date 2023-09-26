@@ -9,9 +9,9 @@ namespace DevFreela.Application.Commands.DeleteProject
     {
         public DeleteProjectCommand(int id)
         {
-            this.id = id;
+            Id = id;
         }
 
-        public int id { get; set; }
+        public int Id { get; private set; }
     }
 }

@@ -8,7 +8,7 @@ namespace DevFreela.API.Filters
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            throw new System.NotImplementedException();
+            return;
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

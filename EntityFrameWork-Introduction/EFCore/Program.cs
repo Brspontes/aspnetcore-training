@@ -14,7 +14,18 @@ namespace EFCore
             //InserirDados();
             //InserirDadosMassa();
             //ConsultarDados();
-            CarregamentoAdiantado();
+            //CarregamentoAdiantado();
+            AtualizarDados();
+        }
+
+        private static void AtualizarDados()
+        {
+            using var db = new Data.ApplicationContext();
+            var cliente = db.Clientes.FirstOrDefault(cliente => cliente.Id == 3);
+
+            cliente.Nome = "Nome alterado";
+            db.Clientes.Update(cliente); //update sobrescreve todas as propriedades
+            db.SaveChanges();
         }
 
         private static void CarregamentoAdiantado()
